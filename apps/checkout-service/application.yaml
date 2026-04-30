@@ -1,0 +1,24 @@
+# ArgoCD Application — deploy checkout-service to payments-backend-dev.
+# Teams manage their own Application manifests here.
+# ArgoCD AppProject (managed by platform team) scopes this to payments-* namespaces only.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: checkout-service-dev
+  namespace: argocd
+  labels:
+    naas.io/team: payments
+    naas.io/env: dev
+spec:
+  project: payments
+  source:
+    repoURL: https://github.com/naastest/team-payments.git
+    targetRevision: HEAD
+    path: apps/checkout-service/helm
+  destination:
+    name: dev
+    namespace: payments-backend-dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,46 @@
+name: Validate Namespace
+
+on:
+  pull_request:
+    paths:
+      - "namespaces/**"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch validation script from platform repo
+        run: |
+          curl -fsSL \
+            https://raw.githubusercontent.com/naastest/naas-platform/main/scripts/validate-namespace-labels.py \
+            -o validate-namespace-labels.py
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml==6.0.2
+
+      - name: Validate namespace labels
+        run: python3 validate-namespace-labels.py namespaces/
+
+      - name: Install Kyverno CLI
+        run: |
+          curl -sL https://github.com/kyverno/kyverno/releases/download/v1.13.4/kyverno-cli_v1.13.4_linux_x86_64.tar.gz | tar xz
+          sudo mv kyverno /usr/local/bin/
+
+      - name: Fetch and run Kyverno baseline dry-run
+        run: |
+          # Pull baseline policies from platform repo and dry-run against changed files
+          git clone --depth=1 --filter=blob:none --sparse \
+            https://github.com/naastest/naas-platform.git platform-policies
+          cd platform-policies && git sparse-checkout set policies/baseline && cd ..
+
+          for f in $(git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'namespaces/**/*.yaml'); do
+            echo "==> Dry-run: $f"
+            kyverno apply platform-policies/policies/baseline/ --resource "$f" || exit 1
+          done

@@ -1,0 +1,10 @@
+# Shift-left ownership model:
+# - Team can self-approve dev and test namespace changes (no platform review needed)
+# - Platform team must approve acceptance and production namespace changes
+
+# Default: team owns everything
+*                        @naastest/team-payments-leads
+
+# Production and acceptance require platform sign-off
+namespaces/production/   @naastest/platform-team @naastest/team-payments-leads
+namespaces/acceptance/   @naastest/platform-team @naastest/team-payments-leads
