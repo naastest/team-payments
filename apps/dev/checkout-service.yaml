@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout-service
+  namespace: payments-backend-dev
+  labels:
+    app: checkout-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: checkout-service
+  template:
+    metadata:
+      labels:
+        app: checkout-service
+    spec:
+      containers:
+        - name: checkout
+          image: nginx:1.27.4
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkout-service
+  namespace: payments-backend-dev
+spec:
+  selector:
+    app: checkout-service
+  ports:
+    - port: 80
+      targetPort: 80
