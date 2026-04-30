@@ -9,8 +9,8 @@ metadata:
     naas.io/app: checkout-service
     naas.io/cost-center: fin-123
     naas.io/compliance: standard
-    naas.io/owner-email: payments-team@example.com
   annotations:
     naas.io/requested-by: jane.doe
     naas.io/jira-ticket: PLAT-0001
-    naas.io/description: "Test namespace for the checkout service backend"
+    naas.io/description: Test namespace for the checkout service backend
+    naas.io/owner-email: payments-team@example.com
