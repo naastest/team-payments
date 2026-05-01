@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-api-v2
+  labels:
+    app: payment-api-v2
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-api-v2
+  template:
+    metadata:
+      labels:
+        app: payment-api-v2
+        version: v2
+    spec:
+      containers:
+        - name: api
+          image: nginxinc/nginx-unprivileged:1.27.4
+          ports:
+            - containerPort: 8080
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 101
+            allowPrivilegeEscalation: false
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-api-v2
+  labels:
+    app: payment-api-v2
+spec:
+  selector:
+    app: payment-api-v2
+  ports:
+    - port: 80
+      targetPort: 8080
