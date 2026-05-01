@@ -1,21 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: checkout-service
+  name: payment-api-v2
   labels:
-    app: checkout-service
+    app: payment-api-v2
+    version: v2
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: checkout-service
+      app: payment-api-v2
   template:
     metadata:
       labels:
-        app: checkout-service
+        app: payment-api-v2
+        version: v2
     spec:
       containers:
-        - name: checkout
+        - name: api
           image: nginxinc/nginx-unprivileged:1.27.4
           ports:
             - containerPort: 8080
@@ -34,12 +36,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: checkout-service
+  name: payment-api-v2
   labels:
-    app: checkout-service
+    app: payment-api-v2
 spec:
   selector:
-    app: checkout-service
+    app: payment-api-v2
   ports:
     - port: 80
       targetPort: 8080
