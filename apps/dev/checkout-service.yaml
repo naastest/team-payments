@@ -17,9 +17,13 @@ spec:
     spec:
       containers:
         - name: checkout
-          image: nginx:1.27.4
+          image: nginxinc/nginx-unprivileged:1.27.4
           ports:
-            - containerPort: 80
+            - containerPort: 8080
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 101
+            allowPrivilegeEscalation: false
           resources:
             requests:
               cpu: 50m
@@ -38,4 +42,4 @@ spec:
     app: checkout-service
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 8080
