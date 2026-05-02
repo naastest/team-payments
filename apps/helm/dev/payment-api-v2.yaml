@@ -1,0 +1,29 @@
+# Helm values for the naastest/helm-charts `service` chart.
+# Release name = payment-api-v2
+image: "nginxinc/nginx-unprivileged:1.27.4"
+containerPort: 8080
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+probes:
+  enabled: true
+  path: /
+  readiness:
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+  liveness:
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    failureThreshold: 3
+
+env:
+  LOG_LEVEL: debug
+  API_VERSION: v2
