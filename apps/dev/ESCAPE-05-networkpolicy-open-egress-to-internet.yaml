@@ -1,0 +1,15 @@
+# ESCAPE ATTEMPT 5: Override the default-deny NetworkPolicy to allow unrestricted internet egress.
+# Expected block: networking.k8s.io/NetworkPolicy is in namespaceResourceBlacklist.
+# ArgoCD error: "resource NetworkPolicy is not permitted in project 'payments'"
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-egress
+  namespace: payments-backend-dev
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - {}  # allow all egress — overrides the Kyverno-generated default-deny

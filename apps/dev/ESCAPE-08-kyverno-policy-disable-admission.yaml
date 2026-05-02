@@ -1,0 +1,19 @@
+# ESCAPE ATTEMPT 8: Create a Kyverno ClusterPolicy that exempts this namespace from all checks.
+# Expected block: kyverno.io/* is in namespaceResourceBlacklist (namespace-scoped) AND
+# ClusterPolicy is cluster-scoped and not in clusterResourceWhitelist.
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disable-all-checks-for-payments
+spec:
+  validationFailureAction: Audit
+  rules:
+    - name: allow-everything
+      match:
+        any:
+          - resources:
+              namespaces: ["payments-backend-dev"]
+              kinds: ["*"]
+      validate:
+        deny: {}

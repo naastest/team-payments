@@ -1,0 +1,15 @@
+# ESCAPE ATTEMPT 6: Create a ResourceQuota in our own namespace to raise CPU/memory caps.
+# Expected block: ResourceQuota is in namespaceResourceBlacklist.
+# ArgoCD error: "resource ResourceQuota is not permitted in project 'payments'"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: unlimited-quota
+  namespace: payments-backend-dev
+spec:
+  hard:
+    requests.cpu: "9999"
+    requests.memory: 9999Gi
+    limits.cpu: "9999"
+    limits.memory: 9999Gi

@@ -1,0 +1,25 @@
+# ESCAPE ATTEMPT 7: Deploy a privileged root container.
+# Expected block: Kyverno policies 'no-root-containers' and 'disallow-privilege-escalation'.
+# This reaches the cluster (namespace is valid, resource type is allowed) but Kyverno
+# admission webhook rejects it at the API server before it is created.
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: privileged-root-pod
+  namespace: payments-backend-dev
+spec:
+  containers:
+    - name: root-shell
+      image: nginxinc/nginx-unprivileged:1.27.4
+      securityContext:
+        runAsUser: 0
+        privileged: true
+        allowPrivilegeEscalation: true
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          cpu: 100m
+          memory: 128Mi
