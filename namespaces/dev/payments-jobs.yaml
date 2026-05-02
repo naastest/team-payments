@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: payments-jobs
+  labels:
+    naas.io/team: payments
+    naas.io/env: dev
+    naas.io/tier: backend
+    naas.io/app: payments-jobs
+    naas.io/cost-center: fin-123
+    naas.io/compliance: standard
+  annotations:
+    naas.io/owner-email: payments-team@example.com
+    naas.io/description: Raw workloads namespace — CronJobs, Jobs, ConfigMaps etc.
+    naas.io/jira-ticket: PLAT-0002
