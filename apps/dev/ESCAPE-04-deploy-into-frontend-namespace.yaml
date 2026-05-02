@@ -1,0 +1,34 @@
+# ESCAPE ATTEMPT 4: Deploy a workload into the frontend team's namespace.
+# Expected block: AppProject destinations only allow payments-* namespaces.
+# ArgoCD error: "namespace 'frontend-ui-dev' is not permitted in project 'payments'"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-lateral-move
+  namespace: frontend-ui-dev
+  labels:
+    app: payments-lateral-move
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-lateral-move
+  template:
+    metadata:
+      labels:
+        app: payments-lateral-move
+    spec:
+      containers:
+        - name: app
+          image: nginxinc/nginx-unprivileged:1.27.4
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false

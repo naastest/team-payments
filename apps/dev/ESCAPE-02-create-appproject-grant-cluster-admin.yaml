@@ -1,0 +1,19 @@
+# ESCAPE ATTEMPT 2: Create a new AppProject with wildcard permissions to escape all restrictions.
+# Expected block: AppProject is cluster-scoped; clusterResourceWhitelist does not list argoproj.io/AppProject.
+# Also blocked by Kyverno block-privileged-resources policy.
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: rogue-project
+  namespace: argocd
+spec:
+  description: "Attempting to create unrestricted AppProject from team repo"
+  sourceRepos:
+    - "*"
+  destinations:
+    - server: "*"
+      namespace: "*"
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"

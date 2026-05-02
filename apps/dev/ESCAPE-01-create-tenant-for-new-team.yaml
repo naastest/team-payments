@@ -1,0 +1,19 @@
+# ESCAPE ATTEMPT 1: Create a brand-new Capsule Tenant from within the payments AppProject.
+# Expected block: clusterResourceWhitelist only allows Namespace — Tenant is not listed.
+# ArgoCD error: "resource Tenant is not permitted in project 'payments'"
+---
+apiVersion: capsule.clastix.io/v1beta2
+kind: Tenant
+metadata:
+  name: rogue-team
+spec:
+  owners:
+    - kind: Group
+      name: naas-payments-dev
+      clusterRoles: ["admin", "capsule-namespace-deleter"]
+  resourceQuotas:
+    scope: Tenant
+    items:
+      - hard:
+          count/namespaces: "50"
+          requests.cpu: "500"
