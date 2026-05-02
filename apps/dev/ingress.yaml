@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: checkout-service
+  labels:
+    app: checkout-service
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: checkout-service.preview.naas.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: checkout-service
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: payment-api-v2
+  labels:
+    app: payment-api-v2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: payment-api-v2.preview.naas.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: payment-api-v2
+                port:
+                  number: 80
