@@ -1,0 +1,40 @@
+# Helm values for the naastest/helm-charts `service` chart.
+# The ApplicationSet in naas-platform reads this file and creates
+# a Helm Application named "helm-payments-checkout-service-dev".
+#
+# Release name = file stem = checkout-service
+# Target namespace must match payments-*
+image: "nginxinc/nginx-unprivileged:1.27.4"
+containerPort: 8080
+namespace: payments-backend-dev
+replicaCount: 2
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+probes:
+  enabled: true
+  path: /
+  readiness:
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+  liveness:
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    failureThreshold: 3
+
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+
+pdb:
+  enabled: true
+  minAvailable: 1

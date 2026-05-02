@@ -1,0 +1,36 @@
+# Helm values for the naastest/helm-charts `service` chart.
+# Release name = payment-api
+# Target namespace must match payments-*
+image: "nginxinc/nginx-unprivileged:1.27.4"
+containerPort: 8080
+namespace: payments-backend-dev
+replicaCount: 2
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+probes:
+  enabled: true
+  path: /
+  readiness:
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+  liveness:
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    failureThreshold: 3
+
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 8
+  targetCPUUtilizationPercentage: 70
+
+env:
+  LOG_LEVEL: info
