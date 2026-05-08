@@ -1,21 +1,23 @@
-# Helm values for the neon-billboard PR preview.
-# Picked up by the pr-preview-team-payments ApplicationSet in naas-platform.
-# The ApplicationSet injects image (with head_sha tag), ingress host, and
-# PR_NUMBER / GIT_BRANCH / GIT_COMMIT env vars at render time via valuesObject.
-#
-# image is intentionally left out here — the ApplicationSet always overrides it.
+image: ghcr.io/naastest/neon-billboard:318cd541f4ebca604b4ce3bd8ce3eec7f4f6d75d
+namespace: payments-backend-dev
+git_commit: "7cb9d93af34f89535b2e7c32a6f1b1ab0ba4e2b3"
+env:
+  APP_ENV: preview
+  PR_NUMBER: "1"
+  GIT_BRANCH: "feature/add-transaction-counter"
+  GIT_COMMIT: "7cb9d93af34f89535b2e7c32a6f1b1ab0ba4e2b3"
+ingress:
+  enabled: true
+  host: neon-billboard-pr-1.preview.naas.local
 containerPort: 8080
-
 replicaCount: 1
-
 securityContext:
   runAsNonRoot: true
-  runAsUser: 101    # nginx-unprivileged UID
+  runAsUser: 101
   allowPrivilegeEscalation: false
   readOnlyRootFilesystem: false
   capabilities:
     drop: [ALL]
-
 resources:
   requests:
     cpu: 50m
@@ -23,7 +25,6 @@ resources:
   limits:
     cpu: 100m
     memory: 64Mi
-
 probes:
   enabled: true
   path: /health
