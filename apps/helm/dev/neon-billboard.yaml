@@ -1,11 +1,11 @@
-image: ghcr.io/naastest/neon-billboard:318cd541f4ebca604b4ce3bd8ce3eec7f4f6d75d
+image: ghcr.io/naastest/neon-billboard:7cb9d93af34f89535b2e7c32a6f1b1ab0ba4e2b3
 namespace: payments-backend-dev
-git_commit: "318cd541f4ebca604b4ce3bd8ce3eec7f4f6d75d"
+git_commit: "7cb9d93af34f89535b2e7c32a6f1b1ab0ba4e2b3"
 env:
   APP_ENV: preview
   PR_NUMBER: "1"
   GIT_BRANCH: "feature/add-transaction-counter"
-  GIT_COMMIT: "318cd541f4ebca604b4ce3bd8ce3eec7f4f6d75d"
+  GIT_COMMIT: "7cb9d93af34f89535b2e7c32a6f1b1ab0ba4e2b3"
 ingress:
   enabled: true
   host: neon-billboard-pr-1.preview.naas.local
