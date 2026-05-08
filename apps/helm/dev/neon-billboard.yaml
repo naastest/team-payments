@@ -1,0 +1,37 @@
+# Helm values for the neon-billboard PR preview.
+# Picked up by the pr-preview-team-payments ApplicationSet in naas-platform.
+# The ApplicationSet injects image (with head_sha tag), ingress host, and
+# PR_NUMBER / GIT_BRANCH / GIT_COMMIT env vars at render time via valuesObject.
+#
+# image is intentionally left out here — the ApplicationSet always overrides it.
+containerPort: 8080
+
+replicaCount: 1
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 101    # nginx-unprivileged UID
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  capabilities:
+    drop: [ALL]
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 32Mi
+  limits:
+    cpu: 100m
+    memory: 64Mi
+
+probes:
+  enabled: true
+  path: /health
+  readiness:
+    initialDelaySeconds: 3
+    periodSeconds: 10
+    failureThreshold: 3
+  liveness:
+    initialDelaySeconds: 5
+    periodSeconds: 30
+    failureThreshold: 3

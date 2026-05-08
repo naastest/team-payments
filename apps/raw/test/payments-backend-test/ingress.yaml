@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: neon-billboard
+  namespace: payments-backend-test
+  labels:
+    app.kubernetes.io/name: neon-billboard
+    naas.io/team: payments
+    naas.io/env: test
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: neon-billboard-test.naas.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: neon-billboard
+                port:
+                  number: 80
