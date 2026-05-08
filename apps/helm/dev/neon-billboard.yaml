@@ -1,4 +1,4 @@
-image: ghcr.io/naastest/neon-billboard:7cb9d93af34f89535b2e7c32a6f1b1ab0ba4e2b3
+image: ghcr.io/naastest/neon-billboard:318cd541f4ebca604b4ce3bd8ce3eec7f4f6d75d
 namespace: payments-backend-dev
 git_commit: "7cb9d93af34f89535b2e7c32a6f1b1ab0ba4e2b3"
 env:
